@@ -36,8 +36,9 @@ special_words = [
 ]
 
 # スペシャルワードによる得点
-SPECIAL_WORD_POINTS = 50
+SPECIAL_WORD_POINTS = 10
 
+FIRST_WORD = "くらうど"
 
 def load_sheet(file_path: str) -> openpyxl.worksheet.worksheet.Worksheet:
     wb = openpyxl.load_workbook(file_path)
@@ -80,6 +81,8 @@ def calculate_score(answers: list) -> int:
 
     # 拗音・促音（ぁ、ぃ、ぅ、ぇ、ぉ、ゃ、ゅ、ょ、っ）を清音に変換
     cleared_answers = replace_yoon_sokuon(vowelized_answers)
+    # 最初のお題を追加
+    cleared_answers.insert(0, FIRST_WORD)
     # print(cleared_answers)
 
     # 連鎖率による得点を計算
@@ -98,6 +101,9 @@ def calculate_score(answers: list) -> int:
     # print(correct_word_len)
 
     # 合計得点を計算
+    # print(score_by_consecutive,
+    #     special_word_score,
+    #     correct_word_len)
     total_score = score_by_consecutive + special_word_score + correct_word_len
     return total_score
 
